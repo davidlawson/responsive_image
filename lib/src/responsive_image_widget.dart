@@ -10,8 +10,8 @@ enum ScalePreference { Lower, Auto, Upper }
 
 class ResponsiveImage extends StatelessWidget {
   const ResponsiveImage(
-      {Key key,
-      @required this.srcSet,
+      {Key? key,
+      required this.srcSet,
       this.scalePreference = ScalePreference.Auto,
       this.builder})
       : assert(srcSet != null),
@@ -30,9 +30,9 @@ class ResponsiveImage extends StatelessWidget {
 
   /// Optional builder to further customize the display of the image.
   /// If not specified, [Image.network] will be used.
-  final ResponsiveImageBuilder builder;
+  final ResponsiveImageBuilder? builder;
 
-  _selectSrcInSet(double maxWidth) {
+  String _selectSrcInSet(double maxWidth) {
     int srcKey = srcSet.keys.reduce((prev, curr) {
       double prevDiff = prev - maxWidth;
       double currDiff = curr - maxWidth;
@@ -51,7 +51,7 @@ class ResponsiveImage extends StatelessWidget {
           return prev;
       }
     });
-    return srcSet[srcKey];
+    return srcSet[srcKey]!;
   }
 
   @override
@@ -62,7 +62,7 @@ class ResponsiveImage extends StatelessWidget {
           constraints.maxWidth * MediaQuery.of(context).devicePixelRatio);
 
       return builder != null
-          ? builder(context, url)
+          ? builder!(context, url)
           : Image.network(
               url,
               fit: BoxFit.fill,
